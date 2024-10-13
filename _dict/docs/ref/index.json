@@ -1,0 +1,502 @@
+{
+  "ProseMirror is structured as a number of separate modules. This reference manual describes the exported API per module. If you want to use something from the prosemirror-state module, for example, you can import it like this:": {
+    "_translate": "ProseMirror 结构为多个独立的模块。本参考手册按模块描述导出的 API。如果你想使用\n        <a href=\"#state\"><code>prosemirror-state</code></a> 模块中的某些内容，例如，\n        你可以这样导入：",
+    "_note": ""
+  },
+  "This is the reference manual for the ProseMirror rich text editor. It lists and describes the full public API exported by the library. For more introductory material, please see the guide.": {
+    "_translate": "这是<a href=\"https://prosemirror.net\">ProseMirror</a>富文本编辑器的参考手册。它列出了该库导出的完整公共API并进行了描述。有关更多入门材料，请参阅<a href=\"/docs/guide/\">指南</a>。",
+    "_note": ""
+  },
+  "Or, using ES6 syntax:": {
+    "_translate": "或者，使用 ES6 语法：",
+    "_note": ""
+  },
+  "This module implements the state object of a ProseMirror editor, along with the representation of the selection and the plugin abstraction.": {
+    "_translate": "此模块实现了ProseMirror编辑器的状态对象，以及选择的表示和插件抽象。",
+    "_note": ""
+  },
+  "ProseMirror keeps all editor state (the things, basically, that would be required to create an editor just like the current one) in a single object. That object is updated (creating a new state) by applying transactions to it.": {
+    "_translate": "ProseMirror 将所有编辑器状态（基本上是创建一个与当前编辑器相同的编辑器所需的东西）保存在一个单一的<a href=\"#state.EditorState\">对象</a>中。通过对其应用<a href=\"#state.Transaction\">事务</a>来更新该对象（创建一个新的状态）。",
+    "_note": ""
+  },
+  "The state of a ProseMirror editor is represented by an object of this type. A state is a persistent data structure—it isn't updated, but rather a new state value is computed from an old one using the apply method.": {
+    "_translate": "ProseMirror 编辑器的状态由此类型的对象表示。状态是一种持久的数据结构——它不会被更新，而是使用<a href=\"#state.EditorState.apply\"><code>apply</code></a>方法从旧状态计算出新状态值。",
+    "_note": ""
+  },
+  "A state holds a number of built-in fields, and plugins can define additional fields.": {
+    "_translate": "一个状态包含多个内置字段，插件可以<a href=\"#state.PluginSpec.state\">定义</a>额外的字段。",
+    "_note": ""
+  },
+  "The current document.": {
+    "_translate": "当前文档。",
+    "_note": ""
+  },
+  "The selection.": {
+    "_translate": "选择。",
+    "_note": ""
+  },
+  "The schema of the state's document.": {
+    "_translate": "该州文件的架构。",
+    "_note": ""
+  },
+  "A set of marks to apply to the next input. Will be null when no explicit marks have been set.": {
+    "_translate": "一组标记应用于下一个输入。当没有设置显式标记时，将为 null。",
+    "_note": ""
+  },
+  "The plugins that are active in this state.": {
+    "_translate": "处于此状态的插件。",
+    "_note": ""
+  },
+  "Apply the given transaction to produce a new state.": {
+    "_translate": "应用给定的事务以生成新状态。",
+    "_note": ""
+  },
+  "Verbose variant of apply that returns the precise transactions that were applied (which might be influenced by the transaction hooks of plugins) along with the new state.": {
+    "_translate": "详细版本的\n                <a href=\"#state.EditorState.apply\"><code>apply</code></a>\n                返回应用的精确事务（可能会受到插件的\n                <a href=\"#state.PluginSpec.filterTransaction\">事务钩子</a>\n                的影响）以及新状态。",
+    "_note": ""
+  },
+  "Start a transaction from this state.": {
+    "_translate": "从此状态<a href=\"#state.Transaction\">开始交易</a>。",
+    "_note": ""
+  },
+  "Create a new state based on this one, but with an adjusted set of active plugins. State fields that exist in both sets of plugins are kept unchanged. Those that no longer exist are dropped, and those that are new are initialized using their init method, passing in the new configuration object..": {
+    "_translate": "创建一个基于此状态的新状态，但调整了活动插件集。两个插件集中都存在的状态字段保持不变。不再存在的字段将被删除，新的字段将使用其<a href=\"#state.StateField.init\"><code>init</code></a>方法进行初始化，并传入新的配置对象。",
+    "_note": ""
+  },
+  "New set of active plugins.": {
+    "_translate": "新的活动插件集。",
+    "_note": ""
+  },
+  "Create a new state.": {
+    "_translate": "创建一个新状态。",
+    "_note": ""
+  },
+  "Serialize this state to JSON. If you want to serialize the state of plugins, pass an object mapping property names to use in the resulting JSON object to plugin objects. The argument may also be a string or number, in which case it is ignored, to support the way JSON.stringify calls toString methods.": {
+    "_translate": "将此状态序列化为JSON。如果要序列化插件的状态，请传递一个对象，将属性名称映射到插件对象中使用的结果JSON对象。该参数也可以是字符串或数字，在这种情况下会被忽略，以支持<code>JSON.stringify</code>调用<code>toString</code>方法的方式。",
+    "_note": ""
+  },
+  "Deserialize a JSON representation of a state. config should have at least a schema field, and should contain array of plugins to initialize the state with. pluginFields can be used to deserialize the state of plugins, by associating plugin instances with the property names they use in the JSON object.": {
+    "_translate": "反序列化状态的 JSON 表示。\n                <code>config</code> 至少应包含一个\n                <code>schema</code> 字段，并且应包含用于初始化状态的插件数组。<code>pluginFields</code> 可以\n                用于反序列化插件的状态，通过将插件实例与它们在 JSON 对象中使用的属性名称关联起来。",
+    "_note": ""
+  },
+  "The schema to use.": {
+    "_translate": "要使用的架构。",
+    "_note": ""
+  },
+  "The set of active plugins.": {
+    "_translate": "活动插件集。",
+    "_note": ""
+  },
+  "The type of object passed to EditorState.create.": {
+    "_translate": "传递给<a href=\"#state.EditorState%5Ecreate\"><code>EditorState.create</code></a>的对象类型。",
+    "_note": ""
+  },
+  "The schema to use (only relevant if no doc is specified).": {
+    "_translate": "要使用的模式（仅在未指定<code>doc</code>时相关）。",
+    "_note": ""
+  },
+  "The starting document. Either this or schema must be provided.": {
+    "_translate": "起始文档。必须提供此文档或<code>schema</code><em>。</em>",
+    "_note": ""
+  },
+  "A valid selection in the document.": {
+    "_translate": "文档中的有效选择。",
+    "_note": ""
+  },
+  "The initial set of stored marks.": {
+    "_translate": "初始设置\n                <a href=\"#state.EditorState.storedMarks\">存储的标记</a>。",
+    "_note": ""
+  },
+  "The plugins that should be active in this state.": {
+    "_translate": "应在此状态下激活的插件。",
+    "_note": ""
+  },
+  "An editor state transaction, which can be applied to a state to create an updated state. Use EditorState.tr to create an instance.": {
+    "_translate": "一个编辑器状态事务，可以应用于一个状态以创建一个更新的状态。使用\n<a href=\"#state.EditorState.tr\"><code>EditorState.tr</code></a>\n来创建一个实例。",
+    "_note": ""
+  },
+  "Transactions track changes to the document (they are a subclass of Transform), but also other state changes, like selection updates and adjustments of the set of stored marks. In addition, you can store metadata properties in a transaction, which are extra pieces of information that client code or plugins can use to describe what a transaction represents, so that they can update their own state accordingly.": {
+    "_translate": "事务跟踪文档的更改（它们是<a href=\"#transform.Transform\"><code>Transform</code></a>的子类），但也包括其他状态更改，如选择更新和<a href=\"#state.EditorState.storedMarks\">存储标记</a>集的调整。此外，您可以在事务中存储元数据属性，这些属性是客户端代码或插件可以使用的额外信息，用于描述事务代表的内容，以便它们可以相应地更新其<a href=\"#state.StateField\">自己的状态</a>。",
+    "_note": ""
+  },
+  "The timestamp associated with this transaction, in the same format as Date.now().": {
+    "_translate": "与此交易关联的时间戳，格式与<code>Date.now()</code>相同。",
+    "_note": ""
+  },
+  "The editor view uses a few metadata properties: it will attach a property \"pointer\" with the value true to selection transactions directly caused by mouse or touch input, a \"composition\" property holding an ID identifying the composition that caused it to transactions caused by composed DOM input, and a \"uiEvent\" property of that may be \"paste\", \"cut\", or \"drop\".": {
+    "_translate": "<a href=\"#view.EditorView\">编辑器视图</a> 使用了一些元数据属性：它会将一个属性 <code>\"pointer\"</code> 值为 <code>true</code> 附加到由鼠标或触摸输入直接引起的选择事务上，一个 <code>\"composition\"</code> 属性持有一个 ID 标识符，标识由组合 DOM 输入引起的事务的组合，以及一个 <code>\"uiEvent\"</code> 属性，可能是 <code>\"paste\"</code>、<code>\"cut\"</code> 或 <code>\"drop\"</code>。",
+    "_note": ""
+  },
+  "The stored marks set by this transaction, if any.": {
+    "_translate": "此交易设置的存储标记（如果有）。",
+    "_note": ""
+  },
+  "The transaction's current selection. This defaults to the editor selection mapped through the steps in the transaction, but can be overwritten with setSelection.": {
+    "_translate": "交易的当前选择。默认情况下，这是通过交易中的步骤<a href=\"#state.Selection.map\">映射</a>到编辑器选择，但可以用<a href=\"#state.Transaction.setSelection\"><code>setSelection</code></a>覆盖。",
+    "_note": ""
+  },
+  "Update the transaction's current selection. Will determine the selection that the editor gets when the transaction is applied.": {
+    "_translate": "更新交易的当前选择。将确定在应用交易时编辑器获得的选择。",
+    "_note": ""
+  },
+  "Whether the selection was explicitly updated by this transaction.": {
+    "_translate": "该事务是否显式更新了选择内容。",
+    "_note": ""
+  },
+  "Set the current stored marks.": {
+    "_translate": "设置当前存储的标记。",
+    "_note": ""
+  },
+  "Make sure the current stored marks or, if that is null, the marks at the selection, match the given set of marks. Does nothing if this is already the case.": {
+    "_translate": "确保当前存储的标记，或者如果为空，则确保选择的标记与给定的标记集匹配。如果已经是这种情况，则不执行任何操作。",
+    "_note": ""
+  },
+  "Add a mark to the set of stored marks.": {
+    "_translate": "添加标记到存储的标记集合。",
+    "_note": ""
+  },
+  "Remove a mark or mark type from the set of stored marks.": {
+    "_translate": "从存储的标记集中删除标记或标记类型。",
+    "_note": ""
+  },
+  "Whether the stored marks were explicitly set for this transaction.": {
+    "_translate": "是否为此交易显式设置了存储的标记。",
+    "_note": ""
+  },
+  "Update the timestamp for the transaction.": {
+    "_translate": "更新交易的时间戳。",
+    "_note": ""
+  },
+  "Replace the current selection with the given slice.": {
+    "_translate": "将当前选择替换为给定的切片。",
+    "_note": ""
+  },
+  "Delete the selection.": {
+    "_translate": "删除所选内容。",
+    "_note": ""
+  },
+  "Replace the selection with the given node. When inheritMarks is true and the content is inline, it inherits the marks from the place where it is inserted.": {
+    "_translate": "将选定内容替换为给定节点。当<code>inheritMarks</code>为true且内容为内联时，它将继承插入位置的标记。",
+    "_note": ""
+  },
+  "Replace the given range, or the selection if no range is given, with a text node containing the given string.": {
+    "_translate": "替换给定范围，或在未给定范围时替换选定内容，\n                用包含给定字符串的文本节点。",
+    "_note": ""
+  },
+  "Store a metadata property in this transaction, keyed either by name or by plugin.": {
+    "_translate": "在此事务中存储一个元数据属性，可以通过名称或插件进行键控。",
+    "_note": ""
+  },
+  "Retrieve a metadata property for a given name or plugin.": {
+    "_translate": "检索给定名称或插件的元数据属性。",
+    "_note": ""
+  },
+  "Indicate that the editor should scroll the selection into view when updated to the state produced by this transaction.": {
+    "_translate": "指示编辑器在更新到此事务生成的状态时应滚动选择内容以使其可见",
+    "_note": ""
+  },
+  "Returns true if this transaction doesn't contain any metadata, and can thus safely be extended.": {
+    "_translate": "如果此交易不包含任何元数据，则返回 true，因此可以安全地扩展。",
+    "_note": ""
+  },
+  "Commands are functions that take a state and a an optional transaction dispatch function and...": {
+    "_translate": "命令是一些函数，它们接受一个状态和一个可选的事务分发函数，并且...",
+    "_note": ""
+  },
+  "True when this transaction has had scrollIntoView called on it.": {
+    "_translate": "True when this transaction has had\n                <code>scrollIntoView</code> called on it.",
+    "_note": ""
+  },
+  "In some cases, the editor view is passed as a third argument.": {
+    "_translate": "在某些情况下，编辑器视图作为第三个参数传递。",
+    "_note": ""
+  },
+  "A ProseMirror selection can be one of several types. This module defines types for classical text selections (of which cursors are a special case) and node selections, where a specific document node is selected. It is possible to extend the editor with custom selection types.": {
+    "_translate": "ProseMirror 选择可以是几种类型之一。此模块定义了经典的<a href=\"#state.TextSelection\">文本选择</a>（其中光标是一个特殊情况）和<a href=\"#state.NodeSelection\"><em>节点</em>选择</a>的类型，其中选择了特定的文档节点。可以通过自定义选择类型来扩展编辑器。",
+    "_note": ""
+  },
+  "Superclass for editor selections. Every selection type should extend this. Should not be instantiated directly.": {
+    "_translate": "编辑器选择的超类。每种选择类型都应扩展此类。不应直接实例化。",
+    "_note": ""
+  },
+  "Initialize a selection with the head and anchor and ranges. If no ranges are given, constructs a single range across $anchor and $head.": {
+    "_translate": "初始化一个包含头部和锚点以及范围的选择。如果没有给定范围，则在<code>$anchor</code>和<code>$head</code>之间构建一个单一范围。",
+    "_note": ""
+  },
+  "The resolved anchor of the selection (the side that stays in place when the selection is modified).": {
+    "_translate": "选择的已解析锚点（在修改选择时保持不变的一侧）。",
+    "_note": ""
+  },
+  "The resolved head of the selection (the side that moves when the selection is modified).": {
+    "_translate": "选择的已解决头（选择被修改时移动的一侧）。",
+    "_note": ""
+  },
+  "The ranges covered by the selection.": {
+    "_translate": "选择范围涵盖。",
+    "_note": ""
+  },
+  "The selection's anchor, as an unresolved position.": {
+    "_translate": "选择的锚点，作为一个未解决的位置。",
+    "_note": ""
+  },
+  "The selection's head.": {
+    "_translate": "选择的头。",
+    "_note": ""
+  },
+  "The lower bound of the selection's main range.": {
+    "_translate": "选择的主要范围的下限。",
+    "_note": ""
+  },
+  "The upper bound of the selection's main range.": {
+    "_translate": "选择主范围的上限。",
+    "_note": ""
+  },
+  "The resolved lower bound of the selection's main range.": {
+    "_translate": "选择的主要范围的已解决下限。",
+    "_note": ""
+  },
+  "The resolved upper bound of the selection's main range.": {
+    "_translate": "选择的主要范围的已解决上限。",
+    "_note": ""
+  },
+  "Indicates whether the selection contains any content.": {
+    "_translate": "指示选择是否包含任何内容。",
+    "_note": ""
+  },
+  "Test whether the selection is the same as another selection.": {
+    "_translate": "测试选择是否与另一个选择相同。",
+    "_note": ""
+  },
+  "Map this selection through a mappable thing. doc should be the new document to which we are mapping.": {
+    "_translate": "将此选择映射到一个\n                <a href=\"#transform.Mappable\">可映射</a>的事物。\n                <code>doc</code> 应该是我们要映射到的新文档。",
+    "_note": ""
+  },
+  "Get the content of this selection as a slice.": {
+    "_translate": "获取此选择的内容作为切片。",
+    "_note": ""
+  },
+  "Replace the selection with a slice or, if no slice is given, delete the selection. Will append to the given transaction.": {
+    "_translate": "将所选内容替换为切片，如果未提供切片，则删除所选内容。将附加到给定的事务。",
+    "_note": ""
+  },
+  "Replace the selection with the given node, appending the changes to the given transaction.": {
+    "_translate": "用给定的节点替换所选内容，并将更改附加到给定的事务。",
+    "_note": ""
+  },
+  "Convert the selection to a JSON representation. When implementing this for a custom selection class, make sure to give the object a type property whose value matches the ID under which you registered your class.": {
+    "_translate": "将选定内容转换为JSON表示形式。在为自定义选择类实现此功能时，请确保为对象提供一个<code>type</code>属性，其值与您<a href=\"#state.Selection%5EjsonID\">注册</a>类的ID匹配。",
+    "_note": ""
+  },
+  "Get a bookmark for this selection, which is a value that can be mapped without having access to a current document, and later resolved to a real selection for a given document again. (This is used mostly by the history to track and restore old selections.) The default implementation of this method just converts the selection to a text selection and returns the bookmark for that.": {
+    "_translate": "获取此选择的<a href=\"#state.SelectionBookmark\">书签</a>，这是一个无需访问当前文档即可映射的值，稍后可以再次解析为给定文档的实际选择。（这主要由历史记录用于跟踪和恢复旧选择。）此方法的默认实现只是将选择转换为文本选择并返回其书签。",
+    "_note": ""
+  },
+  "Controls whether, when a selection of this type is active in the browser, the selected range should be visible to the user. Defaults to true.": {
+    "_translate": "控制是否在浏览器中激活此类型的选择时，所选范围应对用户可见。默认值为<code>true</code>。",
+    "_note": ""
+  },
+  "Find a valid cursor or leaf node selection starting at the given position and searching back if dir is negative, and forward if positive. When textOnly is true, only consider cursor selections. Will return null when no valid selection position is found.": {
+    "_translate": "找到一个有效的光标或叶节点选择，从给定位置开始，如果<code>dir</code>为负数则向后搜索，如果为正数则向前搜索。当<code>textOnly</code>为真时，只考虑光标选择。当没有找到有效的选择位置时，将返回null。",
+    "_note": ""
+  },
+  "Find a valid cursor or leaf node selection near the given position. Searches forward first by default, but if bias is negative, it will search backwards first.": {
+    "_translate": "找到给定位置附近的有效光标或叶节点选择。默认情况下先向前搜索，但如果<code>bias</code>为负数，则先向后搜索。",
+    "_note": ""
+  },
+  "Find the cursor or leaf node selection closest to the start of the given document. Will return an AllSelection if no valid position exists.": {
+    "_translate": "找到最接近给定文档开头的光标或叶节点选择。如果不存在有效位置，将返回一个<a href=\"#state.AllSelection\"><code>AllSelection</code></a>。",
+    "_note": ""
+  },
+  "Find the cursor or leaf node selection closest to the end of the given document.": {
+    "_translate": "找到最接近给定文档末尾的光标或叶节点选择。",
+    "_note": ""
+  },
+  "Deserialize the JSON representation of a selection. Must be implemented for custom classes (as a static class method).": {
+    "_translate": "反序列化选择的JSON表示。必须为自定义类实现（作为静态类方法）。",
+    "_note": ""
+  },
+  "To be able to deserialize selections from JSON, custom selection classes must register themselves with an ID string, so that they can be disambiguated. Try to pick something that's unlikely to clash with classes from other modules.": {
+    "_translate": "为了能够从 JSON 反序列化选择项，自定义选择类必须使用一个 ID 字符串注册自己，以便它们可以被区分开来。尽量选择一些不太可能与其他模块的类冲突的内容。",
+    "_note": ""
+  },
+  "A text selection represents a classical editor selection, with a head (the moving side) and anchor (immobile side), both of which point into textblock nodes. It can be empty (a regular cursor position).": {
+    "_translate": "一个文本选择表示一个经典的编辑器选择，具有一个头（移动端）和锚（固定端），两者都指向文本块节点。它可以是空的（一个常规的光标位置）。",
+    "_note": ""
+  },
+  "Construct a text selection between the given points.": {
+    "_translate": "在给定点之间构建文本选择。",
+    "_note": ""
+  },
+  "Returns a resolved position if this is a cursor selection (an empty text selection), and null otherwise.": {
+    "_translate": "如果这是一个光标选择（一个空的文本选择），则返回一个已解析的位置，否则返回 null。",
+    "_note": ""
+  },
+  "Create a text selection from non-resolved positions.": {
+    "_translate": "从未解析的位置创建文本选择。",
+    "_note": ""
+  },
+  "Return a text selection that spans the given positions or, if they aren't text positions, find a text selection near them. bias determines whether the method searches forward (default) or backwards (negative number) first. Will fall back to calling Selection.near when the document doesn't contain a valid text position.": {
+    "_translate": "返回跨越给定位置的文本选择，或者，如果它们不是文本位置，则在它们附近找到一个文本选择。\n<code>bias</code>决定方法是先向前搜索（默认）还是先向后搜索（负数）。当文档不包含有效的文本位置时，将回退调用\n<a href=\"#state.Selection%5Enear\"><code>Selection.near</code></a>。",
+    "_note": ""
+  },
+  "Create a node selection. Does not verify the validity of its argument.": {
+    "_translate": "创建节点选择。不验证其参数的有效性。",
+    "_note": ""
+  },
+  "A node selection is a selection that points at a single node. All nodes marked selectable can be the target of a node selection. In such a selection, from and to point directly before and after the selected node, anchor equals from, and head equals to..": {
+    "_translate": "一个节点选择是指向单个节点的选择。所有标记为<a href=\"#model.NodeSpec.selectable\">可选择的</a>节点都可以成为节点选择的目标。在这样的选择中，<code>from</code>和<code>to</code>直接指向所选节点之前和之后，<code>anchor</code>等于<code>from</code>，<code>head</code>等于<code>to</code>。",
+    "_note": ""
+  },
+  "The selected node.": {
+    "_translate": "所选节点。",
+    "_note": ""
+  },
+  "Create a node selection from non-resolved positions.": {
+    "_translate": "从未解析的位置创建节点选择。",
+    "_note": ""
+  },
+  "Determines whether the given node may be selected as a node selection.": {
+    "_translate": "确定是否可以选择给定节点作为节点选择。",
+    "_note": ""
+  },
+  "A selection type that represents selecting the whole document (which can not necessarily be expressed with a text selection, when there are for example leaf block nodes at the start or end of the document).": {
+    "_translate": "一种表示选择整个文档的选择类型（当文档的开头或结尾有叶块节点时，不一定能用文本选择来表示）。",
+    "_note": ""
+  },
+  "Create an all-selection over the given document.": {
+    "_translate": "在给定的文档上创建一个全选。",
+    "_note": ""
+  },
+  "Represents a selected range in a document.": {
+    "_translate": "表示文档中选定的范围。",
+    "_note": ""
+  },
+  "Create a range.": {
+    "_translate": "创建一个范围。",
+    "_note": ""
+  },
+  "The lower bound of the range.": {
+    "_translate": "范围的下限。",
+    "_note": ""
+  },
+  "The upper bound of the range.": {
+    "_translate": "范围的上限。",
+    "_note": ""
+  },
+  "A lightweight, document-independent representation of a selection. You can define a custom bookmark type for a custom selection class to make the history handle it well.": {
+    "_translate": "一个轻量级的、与文档无关的选择表示。\n你可以为自定义选择类定义一个自定义书签类型，以便历史记录能够很好地处理它。",
+    "_note": ""
+  },
+  "Map the bookmark through a set of changes.": {
+    "_translate": "将书签映射到一组更改。",
+    "_note": ""
+  },
+  "Resolve the bookmark to a real selection again. This may need to do some error checking and may fall back to a default (usually TextSelection.between) if mapping made the bookmark invalid.": {
+    "_translate": "将书签再次解析为实际选择。这可能需要进行一些错误检查，并且如果映射使书签无效，可能会回退到默认值（通常是<a href=\"#state.TextSelection%5Ebetween\"><code>TextSelection.between</code></a>）。",
+    "_note": ""
+  },
+  "To make it easy to package and enable extra editor functionality, ProseMirror has a plugin system.": {
+    "_translate": "为了便于打包和启用额外的编辑器功能，ProseMirror 有一个插件系统。",
+    "_note": ""
+  },
+  "This is the type passed to the Plugin constructor. It provides a definition for a plugin.": {
+    "_translate": "这是传递给<a href=\"#state.Plugin\"><code>Plugin</code></a>构造函数的类型。它提供了插件的定义。",
+    "_note": ""
+  },
+  "The view props added by this plugin. Props that are functions will be bound to have the plugin instance as their this binding.": {
+    "_translate": "该<a href=\"#view.EditorProps\">视图属性</a>由此插件添加。作为函数的属性将绑定插件实例作为它们的<code>this</code>绑定。",
+    "_note": ""
+  },
+  "Allows a plugin to define a state field, an extra slot in the state object in which it can keep its own data.": {
+    "_translate": "允许插件定义一个<a href=\"#state.StateField\">状态字段</a>，即状态对象中的一个额外槽位，用于存储插件自己的数据。",
+    "_note": ""
+  },
+  "Can be used to make this a keyed plugin. You can have only one plugin with a given key in a given state, but it is possible to access the plugin's configuration and state through the key, without having access to the plugin instance object.": {
+    "_translate": "可以用来使其成为一个带键的插件。你在一个给定状态中只能有一个具有给定键的插件，但可以通过键访问插件的配置和状态，而无需访问插件实例对象。",
+    "_note": ""
+  },
+  "When the plugin needs to interact with the editor view, or set something up in the DOM, use this field. The function will be called when the plugin's state is associated with an editor view.": {
+    "_translate": "当插件需要与编辑器视图交互或在DOM中设置某些内容时，请使用此字段。插件的状态与编辑器视图关联时将调用该函数。",
+    "_note": ""
+  },
+  "When present, this will be called before a transaction is applied by the state, allowing the plugin to cancel it (by returning false).": {
+    "_translate": "在存在时，这将在事务被状态应用之前被调用，允许插件取消它（通过返回 false）。",
+    "_note": ""
+  },
+  "Allows the plugin to append another transaction to be applied after the given array of transactions. When another plugin appends a transaction after this was called, it is called again with the new state and new transactions—but only the new transactions, i.e. it won't be passed transactions that it already saw.": {
+    "_translate": "允许插件在给定的交易数组之后附加另一个要应用的交易。当另一个插件在此调用之后附加交易时，它会再次被调用，并带有新的状态和新的交易——但仅限于新的交易，即它不会传递已经看到的交易。",
+    "_note": ""
+  },
+  "Additional properties are allowed on plugin specs, which can be read via Plugin.spec.": {
+    "_translate": "插件规格允许附加属性，可以通过<a href=\"#state.Plugin.spec\"><code>Plugin.spec</code></a>读取。",
+    "_note": ""
+  },
+  "A plugin spec may provide a state field (under its state property) of this type, which describes the state it wants to keep. Functions provided here are always called with the plugin instance as their this binding.": {
+    "_translate": "插件规范可能会提供一个状态字段（在其\n            <a href=\"#state.PluginSpec.state\"><code>state</code></a> 属性下），\n            这种类型描述了它想要保持的状态。这里提供的函数总是以插件实例作为它们的\n            <code>this</code> 绑定。",
+    "_note": ""
+  },
+  "Initialize the value of the field. config will be the object passed to EditorState.create. Note that instance is a half-initialized state instance, and will not have values for plugin fields initialized after this one.": {
+    "_translate": "初始化字段的值。<code>config</code> 将是传递给 <a href=\"#state.EditorState%5Ecreate\"><code>EditorState.create</code></a> 的对象。请注意，<code>instance</code> 是一个半初始化的状态实例，并且在此之后初始化的插件字段将不会有值。",
+    "_note": ""
+  },
+  "Apply the given transaction to this state field, producing a new field value. Note that the newState argument is again a partially constructed state does not yet contain the state from plugins coming after this one.": {
+    "_translate": "将给定的事务应用于此状态字段，生成一个新的字段值。请注意，<code>newState</code> 参数仍然是一个部分构建的状态，尚未包含在此之后的插件的状态。",
+    "_note": ""
+  },
+  "Convert this field to JSON. Optional, can be left off to disable JSON serialization for the field.": {
+    "_translate": "将此字段转换为JSON。可选，可以省略以禁用该字段的JSON序列化。",
+    "_note": ""
+  },
+  "Deserialize the JSON representation of this field. Note that the state argument is again a half-initialized state.": {
+    "_translate": "反序列化此字段的 JSON 表示。请注意，<code>state</code> 参数再次是一个半初始化状态。",
+    "_note": ""
+  },
+  "A stateful object that can be installed in an editor by a plugin.": {
+    "_translate": "一个有状态的对象，可以通过<a href=\"#state.PluginSpec.view\">插件</a>安装在编辑器中。",
+    "_note": ""
+  },
+  "Called whenever the view's state is updated.": {
+    "_translate": "在视图的状态更新时调用。",
+    "_note": ""
+  },
+  "Called when the view is destroyed or receives a state with different plugins.": {
+    "_translate": "在视图被销毁或接收到具有不同插件的状态时调用。",
+    "_note": ""
+  },
+  "Plugins bundle functionality that can be added to an editor. They are part of the editor state and may influence that state and the view that contains it.": {
+    "_translate": "插件捆绑可以添加到编辑器的功能。它们是<a href=\"#state.EditorState\">编辑器状态</a>的一部分，并且可能会影响该状态和包含它的视图。",
+    "_note": ""
+  },
+  "Create a plugin.": {
+    "_translate": "创建插件。",
+    "_note": ""
+  },
+  "The plugin's spec object.": {
+    "_translate": "插件的<a href=\"#state.PluginSpec\">spec 对象</a>。",
+    "_note": ""
+  },
+  "The props exported by this plugin.": {
+    "_translate": "该<a href=\"#view.EditorProps\">插件</a>导出的属性。",
+    "_note": ""
+  },
+  "Extract the plugin's state field from an editor state.": {
+    "_translate": "从编辑器状态中提取插件的状态字段。",
+    "_note": ""
+  },
+  "A key is used to tag plugins in a way that makes it possible to find them, given an editor state. Assigning a key does mean only one plugin of that type can be active in a state.": {
+    "_translate": "一个键用于<a href=\"#state.PluginSpec.key\">标记</a>插件，使得在给定的编辑器状态下可以找到它们。分配一个键意味着在一个状态中只能有一个该类型的插件处于活动状态。",
+    "_note": ""
+  },
+  "Create a plugin key.": {
+    "_translate": "创建插件密钥。",
+    "_note": ""
+  },
+  "Get the active plugin with this key, if any, from an editor state.": {
+    "_translate": "从编辑器状态中获取具有此键的活动插件（如果有）。",
+    "_note": ""
+  },
+  "Get the plugin's state from an editor state.": {
+    "_translate": "从编辑器状态获取插件的状态。",
+    "_note": ""
+  }
+}
