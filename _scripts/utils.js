@@ -1,4 +1,5 @@
 const { spawn } = require('child_process');
+const fs = require('fs');
 
 exports.translate = async (text) => {
   return new Promise((resolve) => {
@@ -46,7 +47,14 @@ exports.translate = async (text) => {
       const json = JSON.parse(result);
       const translate = json.choices?.[0]?.message?.content;
       if (!translate) {
-        console.error(`ai 翻译失败: ${text}`);
+        console.error(`ai 翻译失败: ${text}， ${result}`);
+        // Note: 创建一个 error.txt ，如果不存在则创建
+        if (!fs.existsSync('error.txt')) {
+          fs.writeFileSync('error.txt', '');
+        }
+        // Note：追加到文件
+        fs.appendFileSync('error.txt', `${text} -> ${result}\n`);
+        resolve('_-_-_-_-_-_');
         return;
       }
       resolve(translate);

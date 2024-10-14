@@ -37,8 +37,9 @@ Promise.all(
       const article = document.querySelector('article');
       // TODO: 不同文件需要翻译的节点不一样，通过配置传入
       if (!article) console.log(`${file} 未找到 article 标签`);
-      const list = article.querySelectorAll('p');
-      console.log(list);
+      // Note: 二次翻译就不再翻了
+      const list = article.querySelectorAll('p:not([data-en])');
+      console.log([...list]);
       const dictPath = file
         .replace('.html', '.json')
         .replace('public', '_dict');
@@ -63,7 +64,6 @@ Promise.all(
               .trim()
               // .replace(/[\r\n]+/g, '')
               .replace(/\s+/gm, ' ');
-            console.log('pureText', pureText);
             if (!pureText) return;
 
             if (dict[pureText]) {
@@ -82,8 +82,8 @@ Promise.all(
               }
               resolve();
             } else {
-              console.log('未翻译');
               semaphore.acquire().then(() => {
+                console.log(`未翻译`);
                 translate(text)
                   .then((translate) => {
                     dict[pureText] = {
@@ -92,7 +92,6 @@ Promise.all(
                     };
                     console.log(`结果：${pureText} -> ${translate}`);
                     // Note: 跟之前一样替换
-                    console.log('已翻译');
                     item.innerHTML = dict[pureText]._translate;
                     item.setAttribute('data-en', pureText);
                   })
@@ -107,10 +106,13 @@ Promise.all(
             }
           });
         })
-      ).then(() => {
-        // 在文件处理完成后,保存更新后的字典
+      ).finally(() => {
+        // 在文件处理完成后（不管有没有错误,保存更新后的字典
         console.log(`保存 ${dictPath}`);
         rootResolve();
+        if (list.length !== Object.keys(dict).length) {
+          console.log(`${file} 翻译中途出错，请检查`);
+        }
         fs.writeFileSync(dictPath, JSON.stringify(dict, null, 2));
         fs.writeFileSync(file, dom.serialize());
       });

@@ -2896,7 +2896,7 @@
     "_note": ""
   },
   "“Smart” opening double quotes.": {
-    "_translate": "“智能”开放双引号。",
+    "_translate": "“智能”",
     "_note": ""
   },
   "“Smart” closing double quotes.": {
@@ -2904,7 +2904,7 @@
     "_note": ""
   },
   "“Smart” opening single quotes.": {
-    "_translate": "“智能”开放单引号。",
+    "_translate": "“Smart” opening single quotes.",
     "_note": ""
   },
   "“Smart” closing single quotes.": {
@@ -2952,7 +2952,7 @@
     "_note": ""
   },
   "Gap cursor selections are represented using this class. Its $anchor and $head properties both point at the cursor position.": {
-    "_translate": "使用此类表示间隙光标选择。其<code>$anchor</code>和<code>$head</code>属性都指向光标位置。",
+    "_translate": "Gap cursor selections are represented using this class. Its\n<code>$anchor</code> and <code>$head</code> properties both point at the cursor position.",
     "_note": ""
   },
   "Create a gap cursor.": {
@@ -3000,7 +3000,7 @@
     "_note": ""
   },
   "The text node.": {
-    "_translate": "文本节点",
+    "_translate": "The text node.",
     "_note": ""
   },
   "An inline image (<img>) node. Supports src, alt, and href attributes. The latter two default to the empty string.": {
