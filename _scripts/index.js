@@ -38,8 +38,7 @@ Promise.all(
       // TODO: 不同文件需要翻译的节点不一样，通过配置传入
       if (!article) console.log(`${file} 未找到 article 标签`);
       // Note: 二次翻译就不再翻了
-      const list = article.querySelectorAll('p:not([data-en])');
-      console.log([...list]);
+      const list = article.querySelectorAll('p:not([data-x-en])');
       const dictPath = file
         .replace('.html', '.json')
         .replace('public', '_dict');
@@ -56,22 +55,19 @@ Promise.all(
         return;
       }
       Promise.all(
-        Array.from(list).map((item) => {
+        Array.from(list).map((item, key) => {
           return new Promise((resolve) => {
             const text = item.innerHTML.trim();
             // Note: 移除换行符
             const pureText = item.textContent
               .trim()
-              // .replace(/[\r\n]+/g, '')
               .replace(/\s+/gm, ' ');
             if (!pureText) return;
-
             if (dict[pureText]) {
-              console.log('已翻译');
               if (dict[pureText]._translate) {
                 item.innerHTML = dict[pureText]._translate;
                 // Note: hover 显示原文，不需要 html 标签
-                item.setAttribute('data-en', pureText);
+                item.setAttribute('data-x-en', pureText);
               }
               // Note: 如果有注释，则插入到当前 p 后面
               if (dict[pureText]._note) {
@@ -83,17 +79,16 @@ Promise.all(
               resolve();
             } else {
               semaphore.acquire().then(() => {
-                console.log(`未翻译`);
-                translate(text)
+                translate(text, {key: file})
                   .then((translate) => {
                     dict[pureText] = {
                       _translate: translate,
                       _note: '',
                     };
-                    console.log(`结果：${pureText} -> ${translate}`);
+                    console.log('AI 翻译:', `${pureText} -> ${translate}`);
                     // Note: 跟之前一样替换
                     item.innerHTML = dict[pureText]._translate;
-                    item.setAttribute('data-en', pureText);
+                    item.setAttribute('data-x-en', pureText);
                   })
                   .finally(() => {
                     // Note: 随机增加延迟
@@ -108,14 +103,13 @@ Promise.all(
         })
       ).finally(() => {
         // 在文件处理完成后（不管有没有错误,保存更新后的字典
-        console.log(`保存 ${dictPath}`);
-        rootResolve();
-        if (list.length !== Object.keys(dict).length) {
-          console.log(`${file} 翻译中途出错，请检查`);
-        }
+        console.log(`${file} 翻译完成`);
         fs.writeFileSync(dictPath, JSON.stringify(dict, null, 2));
         fs.writeFileSync(file, dom.serialize());
+        rootResolve();
       });
     });
   })
-);
+).finally(() => {
+  console.log(`文件全部翻译完成`);
+});

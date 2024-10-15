@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
 
-exports.translate = async (text) => {
+exports.translate = async (text, {key, file}) => {
   return new Promise((resolve) => {
     const payload = JSON.stringify({
       messages: [
@@ -53,7 +53,7 @@ exports.translate = async (text) => {
           fs.writeFileSync('error.txt', '');
         }
         // Note：追加到文件
-        fs.appendFileSync('error.txt', `${text} -> ${result}\n`);
+        fs.appendFileSync('error.txt', `[${file}-${key}]: ${text} -> ${result}\n`);
         resolve('_-_-_-_-_-_');
         return;
       }
